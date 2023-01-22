@@ -1,5 +1,7 @@
 export default {
-  distDir: "_next",
+  generateBuildId: async () => {
+    return 'test'
+  },
   experimental: {
     appDir: true,
   },
