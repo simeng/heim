@@ -1,0 +1,184 @@
+* {
+  font-family: "Handlee", tahoma, verdana;
+  font-size: 14px;
+}
+body {
+  background-color: black;
+}
+#box {
+  position: absolute;
+  top: -100px;
+  left: -80px;
+}
+.btc img {
+  display: block;
+}
+.btc {
+  border: 2px solid #888;
+  padding: 2px;
+  float: right;
+}
+.content {
+  position: relative;
+  margin: 0 auto;
+  width: 70%;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px;
+  margin-top: 50px;
+  box-shadow: 0px 0px 35px black;
+}
+#stars {
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.neon {
+  color: white;
+  text-shadow: 0 0 2px white, 0 0 3px #ffc, 0 0 5px #ffa, 0 0 7px #ff4,
+    0px 0px 9px yellow;
+  font-size: 16px;
+}
+#rawr {
+  position: absolute;
+  top: -21px;
+  right: -364px;
+  color: red;
+  font-size: 235px;
+  font-family: Georgia;
+  font-weight: bold;
+  transform: rotate(9deg);
+  -o-transform: rotate(9deg);
+  -webkit-transform: rotate(9deg);
+  -ms-transform: rotate(9deg);
+}
+.f-right {
+  float: right;
+}
+.third {
+  width: 33%;
+}
+.pad-left {
+  padding-left: 1em;
+}
+li,
+h1,
+h2,
+h3,
+h4 {
+  color: #eee;
+}
+a:visited {
+  color: #c77;
+}
+a {
+  color: #e99;
+}
+p {
+  color: #ccc;
+}
+.shark.attack {
+  transition: left ease-in 2s, bottom ease-in 2s;
+  -webkit-transition: left ease-in 2s, bottom ease-in 2s;
+  -ms-transition: left ease-in 2s, bottom ease-in 2s;
+  -o-transition: left ease-in 2s, bottom ease-in 2s;
+  left: 0;
+  bottom: -150px;
+}
+.shark {
+  position: fixed;
+  left: -436px;
+  bottom: -699px;
+  -webkit-transition: left ease-in 2s, bottom ease-in 2s;
+  -ms-transition: left ease-in 2s, bottom ease-in 2s;
+  -o-transition: left ease-in 2s, bottom ease-in 2s;
+  transition: left ease-in 2s, bottom ease-in 2s;
+}
+.menu-links li {
+  padding: 0 0 0 15px;
+  float: right;
+}
+.menu-links {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  padding-left: 0;
+  padding-right: 15px;
+  list-style-type: none;
+  margin: 0;
+  padding-top: 8px;
+  padding-bottom: 7px;
+  background: rgba(255, 255, 255, 0.05);
+}
+.menu-links a {
+  font-family: arial;
+  font-size: 12px;
+  text-decoration: none;
+  color: white;
+}
+
+@media screen and (max-width: 500px) {
+  .content {
+    width: 95%;
+    margin-top: 10px;
+  }
+  #box {
+    position: absolute;
+    top: -200px;
+    left: -200px;
+  }
+}
+
+svg {
+  display: block;
+}
+
+path {
+  stroke: rgba(200, 200, 200);
+  stroke-width: 10px;
+  fill: transparent;
+}
+path:nth-child(1) {
+  animation-delay: 0s;
+}
+
+path:nth-child(2) {
+  animation-delay: 1s;
+}
+
+path:nth-child(3) {
+  animation-delay: 2s;
+}
+
+path:nth-child(4) {
+  animation-delay: 3s;
+}
+
+path:nth-child(5) {
+  animation-delay: 4s;
+}
+
+path:nth-child(6) {
+  animation-delay: 5s;
+}
+
+path {
+  stroke-dasharray: 500;
+  stroke-dashoffset: 500;
+  animation-name: draw;
+  animation-duration: 2s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 500;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}

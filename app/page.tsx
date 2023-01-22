@@ -1,6 +1,7 @@
 import StarsBackground from "@/components/StarsBackground"
 import PlasmaEffect from "@/components/PlasmaEffect"
 import HaxDrawing from "@/components/HaxDrawing"
+import "./page.css"
 
 export default function Page() {
   return (
@@ -25,7 +26,7 @@ export default function Page() {
         <header>
           <HaxDrawing />
           <a
-            class="btc"
+            className="btc"
             href="https://bitcoinity.org/markets/kraken/USD"
             target="_blank"
           >
@@ -82,10 +83,10 @@ export default function Page() {
           <h2 className="neon">The Bagger 288</h2>
           <PlasmaEffect width={70} height={70} />
           <video
-            class="f-right pad-left"
+            className="f-right pad-left"
             src="/gw2.webm"
-            autoplay="autoplay"
-            loop="loop"
+            autoPlay={true}
+            loop={true}
             muted
           ></video>
           <p>
