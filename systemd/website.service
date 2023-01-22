@@ -1,0 +1,14 @@
+[Unit]
+Description=Heim website (https://h4x.no)
+After=network.target
+StartLimitIntervalSec=60
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+WorkingDirectory=/home/simeng/heim
+ExecStart=npm start
+
+[Install]
+WantedBy=multi-user.target

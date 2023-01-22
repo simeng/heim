@@ -2,10 +2,9 @@
 import { useRef, useEffect } from "react"
 
 function effect1(ref) {
-  const pi = parseInt
   const e = ref.current
-  const w = e.getAttribute("width")
-  const h = e.getAttribute("height")
+  const w = parseInt(e.getAttribute("width"), 10)
+  const h = parseInt(e.getAttribute("height"), 10)
   const c = e.getContext("2d")
   const px = c.getImageData(0, 0, w, h)
   const pal = []
@@ -18,9 +17,9 @@ function effect1(ref) {
 
   for (let i = 0; i < cl.length; i++) {
     for (let j = 0; j < cl[i][0]; j++) {
-      const r = pi(cl[i][1] + (j / cl[i][0]) * (cl[i + 1][1] - cl[i][1]))
-      const g = pi(cl[i][2] + (j / cl[i][0]) * (cl[i + 1][2] - cl[i][2]))
-      const b = pi(cl[i][3] + (j / cl[i][0]) * (cl[i + 1][3] - cl[i][3]))
+      const r = cl[i][1] + (j / cl[i][0]) * (cl[i + 1][1] - cl[i][1])
+      const g = cl[i][2] + (j / cl[i][0]) * (cl[i + 1][2] - cl[i][2])
+      const b = cl[i][3] + (j / cl[i][0]) * (cl[i + 1][3] - cl[i][3])
 
       pal.push([r, g, b])
     }
@@ -37,10 +36,10 @@ function effect1(ref) {
       let f1 = (1 + Math.sin(x / 40)) * 128
       for (let y = 0; y < h; y++) {
         const f2 = (1 + Math.sin(d(x, y, tx, ty) / 50)) * 128
-        let avg = pi((f1 + f2) / 2) % 256
-        px.data[(y * w + x) * 4] = pal[pi(avg)][0]
-        px.data[(y * w + x) * 4 + 1] = pal[pi(avg)][1]
-        px.data[(y * w + x) * 4 + 2] = pal[pi(avg)][2]
+        let avg = Math.floor(((f1 + f2) / 2) % 256)
+        px.data[(y * w + x) * 4] = pal[avg]?.[0] || 0
+        px.data[(y * w + x) * 4 + 1] = pal[avg]?.[1] || 0
+        px.data[(y * w + x) * 4 + 2] = pal[avg]?.[2] || 0
         px.data[(y * w + x) * 4 + 3] = 255
       }
     }
