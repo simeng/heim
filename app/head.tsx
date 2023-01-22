@@ -3,5 +3,5 @@ export default function Head() {
     <>
       <title>Helo</title>
     </>
-  );
+  )
 }
