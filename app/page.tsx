@@ -11,14 +11,12 @@ export default function Page() {
         <ul className="menu-links">
           <li>
             <a href="https://twitter.com/graaten/">
-              <i className="fab fa-twitter"></i>
-              graaten
+              <i className="fab fa-twitter"></i> graaten
             </a>
           </li>
           <li>
             <a href="https://github.com/simeng/">
-              <i className="fab fa-github"></i>
-              simeng
+              <i className="fab fa-github"></i> simeng
             </a>
           </li>
         </ul>
