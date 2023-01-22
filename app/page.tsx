@@ -25,16 +25,6 @@ export default function Page() {
         <StarsBackground width={2000} height={2000} />
         <header>
           <HaxDrawing />
-          <a
-            className="btc"
-            href="https://bitcoinity.org/markets/kraken/USD"
-            target="_blank"
-          >
-            <img
-              src="https://bitcoinity.org/markets/image?span=7d&amp;size=small&amp;currency=USD&amp;exchange=kraken"
-              alt="bitcoin price chart"
-            />
-          </a>
         </header>
 
         <h1>My page of h4x</h1>
