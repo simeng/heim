@@ -39,25 +39,15 @@ export default function Page() {
           </li>
           <li>
             #vev @ efnet did some{" "}
-            <a href="https://github.com/simeng/smallhtml">smallhtml contribs</a> for
-            TG
+            <a href="https://github.com/simeng/smallhtml">smallhtml contribs</a>{" "}
+            for TG
           </li>
         </ul>
 
         <h2>Some stuff I made</h2>
         <ul>
           <li>
-            <a href="/html">Div html exp</a>
-          </li>
-          <li>
-            <a id="play-voice" href="">
-              TTS-API
-            </a>
-            -test
-          </li>
-          <li>
-            An <a href="https://dirty.h4x.no/mml/">MML-parser</a> that uses
-            MIDI.js for output
+            <a href="/html">Div html experiments</a>
           </li>
         </ul>
 
