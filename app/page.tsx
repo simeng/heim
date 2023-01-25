@@ -10,12 +10,12 @@ export default function Page() {
       <div className="content">
         <ul className="menu-links">
           <li>
-            <a href="https://twitter.com/graaten/">
+            <a href="https://twitter.com/graaten">
               <i className="fab fa-twitter"></i> graaten
             </a>
           </li>
           <li>
-            <a href="https://github.com/simeng/">
+            <a href="https://github.com/simeng">
               <i className="fab fa-github"></i> simeng
             </a>
           </li>
@@ -39,7 +39,7 @@ export default function Page() {
           </li>
           <li>
             #vev @ efnet did some{" "}
-            <a href="https://dirty.h4x.no/smallhtml">smallhtml contribs</a> for
+            <a href="https://github.com/simeng/smallhtml">smallhtml contribs</a> for
             TG
           </li>
         </ul>
@@ -47,7 +47,7 @@ export default function Page() {
         <h2>Some stuff I made</h2>
         <ul>
           <li>
-            <a href="/gamepad.html">GamepadAPI</a>-test
+            <a href="/html">Div html exp</a>
           </li>
           <li>
             <a id="play-voice" href="">
