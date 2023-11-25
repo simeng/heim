@@ -1,8 +1,6 @@
 export default {
   generateBuildId: async () => {
-    return 'test'
+    return "test"
   },
-  experimental: {
-    appDir: true,
-  },
+  experimental: {},
 }
