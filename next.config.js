@@ -1,6 +1,5 @@
 export default {
-  generateBuildId: async () => {
-    return "test"
-  },
-  experimental: {},
+	generateBuildId: async () => {
+		return "test"
+	},
 }
