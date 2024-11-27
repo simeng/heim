@@ -1,0 +1,138 @@
+<title>Gamepad Test</title>
+<style>
+    body {
+    }
+    #controller {
+        float: left;
+    }
+    .analog {
+        display: flex;
+    }
+    #buttons {
+        display: flex;
+        background: silver;
+        width: 100%;
+        min-height: 50px;
+        align-items: center;
+        justify-content: center;
+    }
+    .button {
+        background: black;
+        border-radius: 50%;
+        min-width: 30px;
+        height: 30px;
+        color: white;
+        text-align: center;
+        line-height: 30px;
+        margin: 0 5px;
+        padding: 5px;
+    }
+    .axes {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: black;
+        position: relative;
+        margin: 5px;
+    }
+    .pointer {
+        background: white;
+        height: 1%;
+        width: 1%;
+        position: absolute;
+        transform: rotate(90deg);
+        transform-origin: 0 .5%;
+        left: 50%;
+        top: 50%;
+    }
+    #connect-controller {
+        background: red;
+        font-size: 16px;
+        padding: 7px;
+        margin: 10px;
+    }
+</style>
+
+<h2 id="connect-controller">
+    Press a button on gamepad to activate
+</h2>
+<div id="controller">
+    <div class="analog">
+        <div class="axes">
+            <div class="pointer">
+            </div>
+        </div>
+        <div class="axes">
+            <div class="pointer">
+            </div>
+        </div>
+    </div>
+    <div id="buttons">
+        <ul>
+        </ul>
+    </div>
+</div>
+
+<script>
+    var gamepads = [];
+    var gamepad = null;
+    var updater = null;
+    var buttonLabels = ['x', 'o', '□', '△', 'l1', 'r1', 'l2', 'r2', '▬', '►', 'lthumb', 'rthumb', '↑', '↓', '←', '→', 'logo', 'pad'];
+    var $buttons = document.querySelector("#buttons");
+
+    function updateGamepad() {
+        // FIXME: must run getGamepads every check since it reads values and
+        // stores them on chrome
+        gamepads = navigator.getGamepads();
+        gamepad = gamepads[0];
+        var $button = null;
+
+        while ($buttons.hasChildNodes())
+            $buttons.removeChild($buttons.firstChild);
+
+        for (let i in gamepad.buttons) {
+            let button = gamepad.buttons[i]
+            if (button.pressed) {
+                $button = document.createElement("div");
+                $button.classList.add("button");
+                $button.textContent = buttonLabels[i];
+                $buttons.appendChild($button);
+            }
+        }
+
+        var $pointers = document.querySelectorAll(".pointer");
+        for (var i in $pointers) {
+            $pointer = $pointers[i];
+            if (typeof($pointer) != 'object')
+                continue;
+            $pointer.style.width = (50 * Math.sqrt(Math.pow(Math.abs(gamepad.axes[0+(i*2)]), 2) + Math.pow(Math.abs(gamepad.axes[1+(i*2)]), 2))) + "%";
+            var degree = Math.round(Math.atan(gamepad.axes[1+(i*2)] / gamepad.axes[0+(i*2)]) * 180 / Math.PI);
+            if (gamepad.axes[0+(i*2)] < 0)
+                degree += 180;
+            $pointer.style.transform = 'rotate(' + degree + 'deg)';
+        }
+    }
+
+    function initGamepads() {
+        document.querySelector("#connect-controller").style.display = 'none';
+        gamepad = gamepads[0];
+
+        updater = setInterval(updateGamepad, 10);
+    }
+
+    function findGamepads() {
+        // FIXME: must run getGamepads every state check since it reads
+        // values and stores them on chrome
+        // rewrite start check to use event gamepadconnected
+        // https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API
+        gamepads = navigator.getGamepads();
+        if (gamepads.length == 0 || typeof(gamepads[0]) == 'undefined') {
+            setTimeout(findGamepads, 1000);
+        }
+        else {
+            initGamepads();
+        }
+    }
+    setTimeout(findGamepads, 1000);
+
+</script>

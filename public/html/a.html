@@ -1,0 +1,55 @@
+<meta charset="UTF-8" />
+<div style="display: flex; flex-direction: column">
+  <canvas id="graph" width="512" height="100"></canvas>
+  <audio id="sample" src="../dump/Warcraft.mp3"></audio>
+  <button type="button" id="play">Play</button>
+</div>
+
+<script>
+  let audioContext = null
+  let bufferLength = 0
+  let dataArray = new Uint8Array(0)
+  let analyser = null
+
+  document.querySelector("#play").addEventListener("click", () => {
+    const sample = document.querySelector("#sample")
+    sample.play()
+
+    audioContext = new AudioContext()
+    analyser = audioContext.createAnalyser()
+    const track = audioContext.createMediaElementSource(sample)
+
+    track.connect(analyser)
+    analyser.connect(audioContext.destination)
+
+    analyser.fftSize = 1024
+    bufferLength = analyser.frequencyBinCount
+    dataArray = new Uint8Array(bufferLength)
+  })
+
+  const canvas = document.querySelector("#graph")
+  const width = canvas.getAttribute("width")
+  const height = canvas.getAttribute("height")
+  const ctx = canvas.getContext("2d")
+  draw()
+
+  function draw() {
+    if (analyser !== null) {
+      analyser.getByteFrequencyData(dataArray)
+    }
+    ctx.fillStyle = "rgb(0, 0, 0)"
+    ctx.fillRect(0, 0, width, height)
+
+    for (let i = 0; i < bufferLength; i++) {
+      const h = dataArray[i]
+      ctx.fillStyle =
+        "rgb(" +
+        Math.cos((h + i) / 40) * 255 +
+        ", 0, " +
+        Math.sin((h + i) / 50) * 255 +
+        ")"
+      ctx.fillRect(i, height - h / 2, 1, h)
+    }
+    requestAnimationFrame(draw)
+  }
+</script>

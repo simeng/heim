@@ -1,0 +1,16 @@
+<!doctype html>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>
+    window.addEventListener("orientationchange", (e) => {
+        document.querySelector('pre').innerText += "Detected orientation change\n"
+        for (let key in e) {
+            document.querySelector('pre').innerText += `event: ${key} = ${screen.orientation[key]}\n`
+        }
+        for (let key in screen.orientation) {
+            document.querySelector('pre').innerText += `screen orientation: ${key} = ${screen.orientation[key]}\n`
+        }
+    })
+</script>
+<pre>
+Rotate to start
+</pre>

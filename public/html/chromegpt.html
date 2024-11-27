@@ -1,0 +1,137 @@
+<meta charset="utf8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<style>
+:root {
+    color-scheme: light dark;
+    --bg: light-dark(white, black);
+    --text: light-dark(black, white);
+}
+body {
+    &.light {
+        color-scheme: light;
+    }
+    &.dark {
+        color-scheme: dark;
+    }
+
+    background: var(--bg);
+    color: var(--text);
+
+    .hidden {
+        display: none;
+    }
+
+    #warning {
+        border: 3px solid red;
+        margin: 10px 0;
+        padding: 10px;
+    }
+
+    .interface {
+        code {
+            display: block;
+            min-height: 8em;
+            border: 1px solid var(--text);
+            white-space: pre;
+            font-size: 1.1em;
+            padding: 10px;
+            line-height: 1.3em;
+        }
+        form {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        input {
+            flex-grow: 1;
+        }
+        button, input {
+            font-size: 1.2em;
+        }
+    }
+}
+</style>
+    <script>
+        function setColorScheme(colorScheme) {
+            localStorage.colorScheme = colorScheme
+            const cl = document.querySelector('body').classList;
+            if (colorScheme === "light") {
+                cl.remove('dark');
+                cl.add('light');
+            } else if (colorScheme === "dark") {
+                cl.add('dark');
+                cl.remove('light');
+            } else if (colorScheme === "system") {
+                cl.remove('dark');
+                cl.remove('light');
+            }
+        }
+    </script>
+
+    <script type="module">
+        if (localStorage.colorScheme) {
+            setColorScheme(localStorage.colorScheme)
+        }
+        window.onload = async function () {
+            const input = document.querySelector("#prompt")
+            const form = document.querySelector("#form")
+            const result = document.querySelector("#result")
+            const warning = document.querySelector("#warning")
+
+            const session = await window.ai?.assistant?.create?.()
+
+            if (!session) {
+                warning.classList.remove('hidden')
+            }
+
+            form.addEventListener("submit", async function (e) {
+                e.preventDefault()
+                const prompt = input.value
+                input.value = ""
+                result.textContent += "> " + prompt + "\n"
+                if (session) {
+                    const result = await session.prompt(prompt)
+
+                    // todo add text response from results
+                    result.textContent += result
+                } else {
+                    result.textContent += "AI not enabled\n"
+                }
+            })
+        }
+    </script>
+<body>
+    <div style="margin-bottom: 10px; display: flex; align-items: center; gap: 5px">
+        Set color scheme:
+        <button onclick="setColorScheme('dark')">Dark</button>
+        <button onclick="setColorScheme('light')">Light</button>
+        <button onclick="setColorScheme('system')">System</button>
+    </div>
+
+    <div id="warning" class="hidden">
+        AI not enabled.
+        <ol>
+            <li>
+                <a href="chrome://flags/#prompt-api-for-gemini-nano">chrome://flags/#prompt-api-for-gemini-nano</a>
+                Select ‘Enabled’
+            </li>
+            <li>
+                <a href="chrome://flags/#optimization-guide-on-device-model">chrome://flags/#optimization-guide-on-device-model</a>
+                Select ‘Enabled BypassPrefRequirement’
+            </li>
+            <li>
+                <a href="chrome://components">chrome://components</a>
+                Click ‘Check for Update’ on ‘Optimization Guide On Device Model’ to download the model.
+            </li>
+        </ol>
+    </div>
+
+    <div class="interface">
+        <code id="result"></code>
+        <form id="form">
+            <input placeholder="Ask chromegpt a question" type="text" id="prompt" />
+            <button type="submit">➤</button>
+        </form>
+    </div>
+</body>

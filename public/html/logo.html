@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<head>
+  <style>
+    video {
+      width: 100%;
+      height: 100%;
+    }
+    body {
+      background: black;
+      overflow: hidden;
+    }
+  </style>
+  <video autoplay loop muted>
+    <source type="video/webm" src="../dump/prisguiden-logo.webm" />
+    <source type="video/mp4" src="../dump/prisguiden-logo.mp4" />
+  </video>
+
+  <script>
+    document.querySelector("video").addEventListener("click", (e) => {
+      e.target.requestFullscreen()
+    })
+  </script>
+</head>

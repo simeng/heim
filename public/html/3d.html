@@ -1,0 +1,118 @@
+<meta charset="UTF-8" />
+<style>
+  body {
+    background: black;
+    margin: 0;
+  }
+  button {
+    width: 50px;
+  }
+</style>
+<div style="display: flex; flex-direction: column">
+  <div id="container"></div>
+  <audio id="sample" src="../dump/elinors vise.ogg"></audio>
+  <button type="button" id="play">Play</button>
+</div>
+
+<script type="module">
+  import "./dist/three.min.js"
+
+  let audioContext = null
+  let bufferLength = 0
+  let dataArray = new Uint8Array(0)
+  let analyser = null
+  let numItems = 32
+
+  document.querySelector("#play").addEventListener("click", () => {
+    const sample = document.querySelector("#sample")
+    sample.play()
+
+    audioContext = new AudioContext()
+    analyser = audioContext.createAnalyser()
+    const track = audioContext.createMediaElementSource(sample)
+
+    track.connect(analyser)
+    analyser.connect(audioContext.destination)
+
+    analyser.fftSize = numItems * 2
+    bufferLength = analyser.frequencyBinCount
+    dataArray = new Uint8Array(bufferLength)
+  })
+
+  const width = window.innerWidth
+  const height = 800
+  const aspect_ratio = width / height
+
+  const camera = new THREE.PerspectiveCamera(75, aspect_ratio, 1, 1000)
+  camera.position.z = 400
+  camera.position.y += 100
+  camera.rotation.x -= 0.2
+
+  const scene = new THREE.Scene()
+  let t = 0
+
+  const items = []
+  for (let i = 0; i < numItems; i++) {
+    let geometry = new THREE.BoxGeometry(
+      Math.random() * 40,
+      200,
+      Math.random() * 40
+    )
+    let color = new THREE.Color(Math.random(), Math.random(), Math.random())
+    let material = new THREE.MeshLambertMaterial({
+      color,
+    })
+    let mesh = new THREE.Mesh(geometry, material)
+    mesh.position.x = i * (width / numItems) - width / 2
+    scene.add(mesh)
+
+    items.push({
+      mesh,
+    })
+  }
+
+  const texture = new THREE.TextureLoader().load("../dump/dmz.png")
+  const geometry = new THREE.BoxGeometry(400, 400, 1)
+  const material = new THREE.MeshLambertMaterial({
+    map: texture,
+  })
+  const bannerMesh = new THREE.Mesh(geometry, material)
+  bannerMesh.position.z = -100
+  scene.add(bannerMesh)
+
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.2)
+  scene.add(ambientLight)
+  const light = new THREE.DirectionalLight(0xffffff, 1)
+  light.position.set(100, 100, 100)
+  scene.add(light)
+
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+  })
+  renderer.setPixelRatio(window.devicePixelRatio)
+  renderer.setSize(width, height)
+
+  const container = document.querySelector("#container")
+  container.appendChild(renderer.domElement)
+
+  draw()
+
+  function draw() {
+    t += 1
+    if (analyser !== null) {
+      analyser.getByteFrequencyData(dataArray)
+    }
+
+    for (let i = 0; i < bufferLength; i++) {
+      const h = dataArray[i]
+      items[i].mesh.scale.y = h / 255
+      items[i].mesh.rotation.y += 0.001 + i / (bufferLength * 100)
+    }
+    camera.position.x = Math.sin(t / 1000) * 300
+    bannerMesh.position.x = Math.cos(t / 1000) * 300
+    bannerMesh.rotation.x += 0.001
+
+    renderer.render(scene, camera)
+    requestAnimationFrame(draw)
+  }
+</script>

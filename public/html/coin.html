@@ -1,0 +1,117 @@
+<meta charset="utf-8" />
+<meta
+  name="viewport"
+  content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+/>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: light-dark(white, black);
+    --fg: light-dark(black, white);
+  }
+  body {
+    background: var(--bg);
+    text: var(--fg);
+  }
+</style>
+<script type="importmap">
+  {
+    "imports": {
+      "three": "./dist/three.module.min.js",
+      "three/addons/": "./dist/"
+    }
+  }
+</script>
+<script type="module">
+  import * as THREE from "three"
+  import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js"
+  import CoinSounds from "./coin_sounds/coins.js"
+
+  const coinSounds = new CoinSounds()
+
+  let camera,
+    scene,
+    renderer,
+    coin,
+    coins = [],
+    t = 0
+
+  init()
+
+  const es = new EventSource("https://h4x.no/sub?id=clicks")
+  es.addEventListener("message", (e) => {
+    console.log("message", e)
+    sendCoin()
+  })
+
+  function sendCoin() {
+    coinSounds.play()
+    const newCoin = {
+      z: t,
+      mesh: coin.clone(),
+    }
+    coins.push(newCoin)
+    scene.add(newCoin.mesh)
+  }
+
+  function init() {
+    const container = document.createElement("div")
+    container.addEventListener("click", () => {
+      sendCoin()
+    })
+    document.body.appendChild(container)
+
+    camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.25,
+      100,
+    )
+    camera.position.set(0, 3, 5)
+    camera.rotation.x = -0.1
+
+    scene = new THREE.Scene()
+
+    const dirlight = new THREE.DirectionalLight(0xffffff, 1)
+    dirlight.position.set(2, 2, 5)
+    dirlight.target = new THREE.Object3D(0, 0, 0)
+    dirlight.intensity = 3
+    scene.add(dirlight)
+
+    const loader = new GLTFLoader()
+    loader.load("coin.glb", async function (gltf) {
+      coin = gltf.scene
+
+      await renderer.compileAsync(coin, camera, scene)
+    })
+
+    renderer = new THREE.WebGLRenderer({ antialias: true })
+    renderer.setPixelRatio(window.devicePixelRatio)
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.toneMapping = THREE.ACESFilmicToneMapping
+    renderer.toneMappingExposure = 1
+    container.appendChild(renderer.domElement)
+  }
+
+  function render() {
+    renderer.render(scene, camera)
+    requestAnimationFrame(render)
+  }
+  render()
+
+  setInterval(() => {
+    t += 0.05
+    for (const i in coins) {
+      const coin = coins[i]
+      const d = t - coin.z
+      coin.mesh.rotation.x = -d * 2
+      coin.mesh.rotation.y = Math.sin(-d)
+      coin.mesh.position.y = Math.abs(Math.sin(d * 1.5)) * 15 * Math.exp(-d / 4)
+      coin.mesh.position.z += -d / 10
+      if (d > 10) {
+        coins.splice(i, 1)
+        scene.remove(coin)
+      }
+    }
+  }, 10)
+</script>

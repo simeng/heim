@@ -1,0 +1,109 @@
+<style>
+    body {
+        margin: 0;
+        background: black;
+    }
+</style>
+<script defer>
+    // Define some constants
+const PI = Math.PI;
+const SUN_RADIUS = 80;
+const NUM_PLANETS = 5;
+const PLANET_RADIUS = [20, 10, 5, 2.5, 1.25];
+const PLANET_DISTANCE = [150, 200, 250, 300, 350];
+const PLANET_SPEED = [0.5, 0.25, 0.1, 0.05, 0.01];
+const PLANET_INCLINATION = [10, 15, 20, 25, 30];
+
+// Define a class to store the current state of the solar system
+class SolarSystem {
+  constructor() {
+    this.planet_position = Array(NUM_PLANETS).fill(0);
+    this.planet_inclination = Array.from(PLANET_INCLINATION);
+  }
+}
+
+// Create a global variable for the current state of the solar system
+const solar_system = new SolarSystem();
+
+// Function to initialize the canvas
+function init() {
+  // Get a reference to the canvas element
+  const canvas = document.getElementById("canvas");
+
+  // Set the width and height of the canvas
+  canvas.width = 800;
+  canvas.height = 600;
+
+  redraw()
+}
+function redraw() {
+  // Get a 2D drawing context
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+  // Set the fill style to yellow for the sun
+  ctx.fillStyle = "yellow";
+
+  // Draw the sun
+  ctx.beginPath();
+  ctx.arc(400, 300, SUN_RADIUS, 0, 2 * PI);
+  ctx.fill();
+
+  // Set the stroke style to white for the planets
+  ctx.strokeStyle = "white";
+
+  // Draw each planet
+  for (let i = 0; i < NUM_PLANETS; i++) {
+    draw_planet(ctx, i);
+  }
+}
+
+// Function to update the solar system state
+function update() {
+  // Update the position of each planet
+  for (let i = 0; i < NUM_PLANETS; i++) {
+    solar_system.planet_position[i] += PLANET_SPEED[i];
+
+    // Make sure the position stays within the range [0, 360]
+    solar_system.planet_position[i] %= 360;
+  }
+  redraw()
+
+  // Request another animation frame
+  window.requestAnimationFrame(update);
+}
+
+// Function to draw a planet
+function draw_planet(ctx, planet_index) {
+  // Calculate the x and y position of the planet
+  const x = 400 + PLANET_DISTANCE[planet_index] * Math.cos(solar_system.planet_position[planet_index] * PI / 180);
+  const y = 300 + PLANET_DISTANCE[planet_index] * Math.sin(solar_system.planet_position[planet_index] * PI / 180);
+
+  // Save the current drawing context
+  ctx.save();
+
+  // Translate the coordinate system
+  ctx.translate(x, y);
+
+  // Rotate the coordinate system
+  ctx.rotate(solar_system.planet_inclination[planet_index] *     PI / 180);
+
+    // Draw the planet
+    ctx.beginPath();
+    ctx.arc(0, 0, PLANET_RADIUS[planet_index], 0, 2 * PI);
+    ctx.stroke();
+
+    // Restore the previous drawing context
+    ctx.restore();
+    }
+
+// Initialize the canvas when the page is loaded
+window.addEventListener("load", () => {
+    init();
+    update();
+});
+
+</script>
+
+<canvas id="canvas"></canvas>

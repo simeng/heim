@@ -1,0 +1,89 @@
+<style>
+    body {
+        background: black;
+    }
+</style>
+<canvas id="canvas"></canvas>
+<script>
+
+// Code by openai
+class Complex {
+    constructor(re, im) {
+        this.re = re;
+        this.im = im;
+    }
+
+    // Return the magnitude of the complex number
+    abs() {
+        return Math.sqrt(this.re * this.re + this.im * this.im);
+    }
+
+    // Add a complex number to this one
+    add(c) {
+        return new Complex(this.re + c.re, this.im + c.im);
+    }
+
+    // Subtract a complex number from this one
+    sub(c) {
+        return new Complex(this.re - c.re, this.im - c.im);
+    }
+
+    // Multiply this complex number by another one
+    mul(c) {
+        return new Complex(
+            this.re * c.re - this.im * c.im,
+            this.re * c.im + this.im * c.re
+        );
+    }
+}
+
+
+// Set up the canvas element
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+
+// Set the dimensions of the canvas
+canvas.width = 800;
+canvas.height = 600;
+
+// Define the complex plane on which the Mandelbrot set will be drawn
+var minRe = -2.0;
+var maxRe = 1.0;
+var minIm = -1.0;
+var maxIm = 1.0;
+
+// Define the maximum number of iterations to perform
+var maxIter = 256;
+
+// Define a function to draw the Mandelbrot set
+function drawMandelbrot() {
+  // Iterate over each pixel in the canvas
+    for (var x = 0; x < canvas.width; x++) {
+        for (var y = 0; y < canvas.height; y++) {
+            // Calculate the complex number corresponding to the current pixel
+            var cRe = x / canvas.width * (maxRe - minRe) + minRe;
+            var cIm = y / canvas.height * (maxIm - minIm) + minIm;
+            var c = new Complex(cRe, cIm);
+
+            // Perform the Mandelbrot iteration
+            var z = new Complex(0, 0);
+            var iter = 0;
+            while (z.abs() < 2 && iter < maxIter) {
+                z = z.mul(z).add(c);
+                iter++;
+            }
+
+// Set the color of the pixel based on whether it is part of the Mandelbrot set or not
+            if (iter === maxIter) {
+                ctx.fillStyle = "black";
+            } else {
+                ctx.fillStyle = "hsl(0, 100%, " + (iter / maxIter * 100) + "%)";
+            }
+            ctx.fillRect(x, y, 1, 1);
+        }
+    }
+}
+
+// Draw the Mandelbrot set when the window has finished loading
+window.onload = drawMandelbrot;
+</script>

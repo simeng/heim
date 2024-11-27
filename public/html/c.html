@@ -1,0 +1,40 @@
+<!doctype html>
+<style>
+body {
+    margin: 0;
+}
+#main {
+    display: flex;
+    height: 100vh;
+}
+.color {
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    padding-top: 1%;
+}
+</style>
+
+<main id="main">
+</main>
+<script type="module">
+    import { palette } from './c.js'
+
+    const d = document.querySelector("#main")
+
+    for (let p of palette) {
+        const e = document.createElement("div")
+        e.classList.add("color")
+        e.style.backgroundColor = p
+        e.textContent = p
+        e.addEventListener("click", () => {
+            navigator.clipboard.writeText(p)
+            const copied = document.createElement("p")
+            copied.textContent = "copied"
+            e.appendChild(copied)
+            setTimeout(() => e.removeChild(copied), 4000)
+        })
+        d.appendChild(e)
+    }
+</script>

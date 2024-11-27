@@ -1,0 +1,26 @@
+<!doctype html>
+
+<style>
+    meter {
+        width: 100%;
+        height: 5em;
+    }
+</style>
+<body>
+    <meter id="vumeter" min="0" max="100" low="30" high="50" optimum="70" value="0" />
+
+    <script>
+        const vumeter = document.querySelector("#vumeter")
+
+        let vu_value = 0
+        let vu_inc = .2
+
+        setInterval(() => {
+            vu_value += vu_inc
+            if (vu_value > 100 || vu_value < 0) {
+                vu_inc *= -1
+            }
+            vumeter.value = vu_value
+        }, 10)
+    </script>
+</body>

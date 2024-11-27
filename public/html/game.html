@@ -1,0 +1,119 @@
+<title>Game</title>
+<style>
+    body {
+        background: black;
+        margin: 0;
+    }
+    #canvas {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        height: 100%;
+        width: 100%;
+    }
+    h2 {
+        background: white
+    }
+</style>
+
+<h2 id="connect-controller">
+    Press a button on gamepad to activate
+</h2>
+
+<canvas width="1000" height="1000" id="canvas" />
+
+<script>
+    class Player {
+        #speed = .4
+        #x = 500
+        #y = 500
+
+        constructor() {
+        }
+
+        move(input) {
+            this.#x += input.dx * this.#speed
+            this.#y += input.dy * this.#speed
+        }
+
+        update(g) {
+            ctx.fillRect(this.#x, this.#y, 5, 5)
+        }
+    }
+
+    class Game {
+        constructor() {
+            this.players = [new Player()]
+        }
+
+        setPlayerInput(playerNum, input) {
+            this.players[playerNum].move(input)
+        }
+
+        update(ctx) {
+            ctx.fillStyle = 'black'
+            ctx.fillRect(0, 0, 1000, 1000)
+
+            ctx.fillStyle = 'white'
+            for (const player of this.players) {
+                player.update(ctx)
+            }
+        }
+    }
+    let gamepads = [];
+    let gamepad = null;
+    let isRunning = true
+
+    let ctx = document.querySelector("#canvas").getContext('2d')
+    let game = new Game()
+
+    function update() {
+        if (!isRunning) {
+            return false
+        }
+
+        const playerInput = getPlayerInputFromGamepad()
+        game.setPlayerInput(0, playerInput)
+        game.update(ctx)
+        window.requestAnimationFrame(update)
+    }
+
+    function getPlayerInputFromGamepad() {
+        gamepads = navigator.getGamepads();
+        gamepad = gamepads[0];
+
+        const dx = gamepad.axes[0]
+        const dy = gamepad.axes[1]
+        const btn = { 
+            a: gamepad.buttons[0].pressed,
+            b: gamepad.buttons[1].pressed
+        }
+
+        return { dx, dy, btn }
+    }
+
+    function initGamepads() {
+        document.querySelector("#connect-controller").style.display = 'none';
+        gamepad = gamepads[0];
+
+        window.requestAnimationFrame(update)
+    }
+
+    function findGamepads() {
+        // FIXME: must run getGamepads every state check since it reads
+        // values and stores them on chrome
+        // rewrite start check to use event gamepadconnected
+        // https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API
+        gamepads = navigator.getGamepads();
+        if (gamepads.length == 0 || typeof(gamepads[0]) == 'undefined') {
+            setTimeout(findGamepads, 1000);
+        }
+        else {
+            console.log('found gamepad')
+            initGamepads();
+        }
+    }
+    findGamepads()
+
+
+</script>

@@ -1,0 +1,16 @@
+<!doctype html>
+<body>
+    <button id="set-state">Set</button>
+    <script>
+        let state = {}
+        window.addEventListener('popstate', (e) => {
+            console.log('pop', e.state)
+            state = e.state
+        })
+        document.querySelector('#set-state').addEventListener('click', () => {
+            console.log('click')
+            state.i = (state.i || 0) + 1
+            history.pushState(state, 'hello', '#' + state.i)
+        })
+    </script>
+</body>

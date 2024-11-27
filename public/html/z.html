@@ -1,0 +1,73 @@
+<!doctype html>
+<style>
+@keyframes widthfix {
+    from {
+        width: 50px;
+    }
+    to {
+        width: 500px;
+    }
+}
+.flexi:nth-child(2n) {
+    background: green;
+}
+.flexc {
+    animation: widthfix 5s infinite alternate linear;
+    display: flex;
+    flex-wrap: wrap;
+    width: 150px;
+}
+.flexi {
+    position: relative;
+    margin: auto 0;
+    background: red;
+    width: 45px;
+    height: 45px;
+}
+.overflowing {
+    background: rgba(0, 0, 0, .8);
+    color: white;
+    width: 75px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 1;
+}
+.overflowing2 {
+    background: rgba(255, 255, 0, .8);
+    color: black;
+    width: 75px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 1;
+}
+p {
+    margin: 0;
+}
+</style>
+
+<div class="flexc">
+    <div class="flexi">
+        <div class="overflowing">
+            <p>yep yep yep</p>
+            <p>yep yep yep</p>
+            <p>yep yep yep</p>
+            <p>yep yep yep</p>
+        </div>
+    </div>
+    <div class="flexi">2</div>
+    <div class="flexi">3</div>
+    <div class="flexi">4</div>
+    <div class="flexi">
+        <div class="overflowing2">
+            <p>five five five</p>
+            <p>five five five</p>
+        </div>
+    </div>
+    <div class="flexi">6</div>
+    <div class="flexi">7</div>
+    <div class="flexi">8</div>
+    <div class="flexi">9</div>
+    <div class="flexi">10</div>
+</div>
