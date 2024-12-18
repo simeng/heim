@@ -79,22 +79,34 @@ body {
             const result = document.querySelector("#result")
             const warning = document.querySelector("#warning")
 
-            const session = await window.ai?.assistant?.create?.()
+            const session = await window.ai?.languageModel?.create?.()
 
-            if (!session) {
+            if (!session?.prompt) {
                 warning.classList.remove('hidden')
             }
 
             form.addEventListener("submit", async function (e) {
                 e.preventDefault()
+                const oldBuffer = result.textContent
                 const prompt = input.value
                 input.value = ""
-                result.textContent += "> " + prompt + "\n"
+                const question = "> " + prompt + "\n"
+                let answer = ""
+                result.textContent = oldBuffer + question
                 if (session) {
-                    const result = await session.prompt(prompt)
+                    const stream = await session.promptStreaming(prompt)
+                    const streamReader = stream.getReader()
 
                     // todo add text response from results
-                    result.textContent += result
+                    let i = 1000
+                    while (i--) {
+                        const { done, value } = await streamReader.read()
+                        if (done) { 
+                            return
+                        }
+                        answer = value
+                        result.textContent = oldBuffer + question + answer
+                    }
                 } else {
                     result.textContent += "AI not enabled\n"
                 }
