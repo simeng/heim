@@ -6,6 +6,7 @@
     color-scheme: light dark;
     --bg: light-dark(white, black);
     --text: light-dark(black, white);
+    --question: light-dark(green, lightgreen);
 }
 body {
     &.light {
@@ -23,13 +24,32 @@ body {
     }
 
     #warning {
+        z-index: 1;
+        position: absolute;
+        right: 0;
+        background: var(--bg);
         border: 3px solid red;
-        margin: 10px 0;
+        margin: 10px;
         padding: 10px;
     }
 
     .interface {
+        position: absolute;
+        padding: 1em;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        gap: 1em;
+        flex-direction: column;
+        .colorscheme {
+            display: flex; 
+            align-items: center; 
+            gap: 5px;
+        }
         code {
+            flex-grow: 1;
             display: block;
             min-height: 8em;
             border: 1px solid var(--text);
@@ -37,17 +57,36 @@ body {
             font-size: 1.1em;
             padding: 10px;
             line-height: 1.3em;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            text-wrap: auto;
+            
+            .q {
+                color: var(--question);
+                margin: 1em 0 1em;
+            }
+
+            strong {
+                font-size: 1.2em;
+            }
+            
+            li {
+                margin: .2em 0 .2em .4em;
+            }
         }
         form {
             display: flex;
             gap: 5px;
             align-items: center;
+            margin-bottom: 0;
         }
-        input {
-            flex-grow: 1;
-        }
-        button, input {
-            font-size: 1.2em;
+        form {
+            input {
+                flex-grow: 1;
+            }
+            button, input {
+                font-size: 1.2em;
+            }
         }
     }
 }
@@ -87,12 +126,12 @@ body {
 
             form.addEventListener("submit", async function (e) {
                 e.preventDefault()
-                const oldBuffer = result.textContent
+                const oldBuffer = result.innerHTML
                 const prompt = input.value
                 input.value = ""
-                const question = "> " + prompt + "\n"
+                const question = '<div class="q">&gt; ' + prompt + "</div>\n"
                 let answer = ""
-                result.textContent = oldBuffer + question
+                result.innerHTML = oldBuffer + question
                 if (session) {
                     const stream = await session.promptStreaming(prompt)
                     const streamReader = stream.getReader()
@@ -105,7 +144,10 @@ body {
                             return
                         }
                         answer = value
-                        result.textContent = oldBuffer + question + answer
+                            .replaceAll(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+                            .replaceAll(/\n\s*\* /g, '<li>')
+                        result.innerHTML = oldBuffer + question + answer
+                        result.scrollTo(0, result.scrollHeight)
                     }
                 } else {
                     result.textContent += "AI not enabled\n"
@@ -114,12 +156,6 @@ body {
         }
     </script>
 <body>
-    <div style="margin-bottom: 10px; display: flex; align-items: center; gap: 5px">
-        Set color scheme:
-        <button onclick="setColorScheme('dark')">Dark</button>
-        <button onclick="setColorScheme('light')">Light</button>
-        <button onclick="setColorScheme('system')">System</button>
-    </div>
 
     <div id="warning" class="hidden">
         AI not enabled.
@@ -140,6 +176,12 @@ body {
     </div>
 
     <div class="interface">
+    <div class="colorscheme">
+        Set color scheme:
+        <button onclick="setColorScheme('dark')">Dark</button>
+        <button onclick="setColorScheme('light')">Light</button>
+        <button onclick="setColorScheme('system')">System</button>
+    </div>
         <code id="result"></code>
         <form id="form">
             <input placeholder="Ask chromegpt a question" type="text" id="prompt" />
