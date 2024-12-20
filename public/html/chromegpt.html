@@ -7,6 +7,7 @@
     --bg: light-dark(white, black);
     --text: light-dark(black, white);
     --question: light-dark(green, lightgreen);
+    --code: light-dark(brown, yellow);
 }
 body {
     &.light {
@@ -22,6 +23,7 @@ body {
     .hidden {
         display: none;
     }
+
 
     #warning {
         z-index: 1;
@@ -66,6 +68,10 @@ body {
                 margin: 1em 0 1em;
             }
 
+            .block, .inline {
+                color: var(--code);
+            }
+
             strong {
                 font-size: 1.2em;
             }
@@ -106,6 +112,10 @@ body {
                 cl.remove('light');
             }
         }
+        function escapeHTML(html) {
+            return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
+        }
+
     </script>
 
     <script type="module">
@@ -146,6 +156,14 @@ body {
                         answer = value
                             .replaceAll(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
                             .replaceAll(/\n\s*\* /g, '<li>')
+                        const codeBlocks = answer.matchAll(/\`\`\`([^`]+)\`?\`?\`?/g)
+                        for (const block of codeBlocks) {
+                            answer = answer.replaceAll(block[0], '<div class="block">' + escapeHTML(block[1]) + '</div>');
+                        }
+                        const codeElems = answer.matchAll(/\`([^`]+)\`?/g)
+                        for (const block of codeElems) {
+                            answer = answer.replaceAll(block[0], '<span class="inline">' + escapeHTML(block[1]) + '</span>');
+                        }
                         result.innerHTML = oldBuffer + question + answer
                         result.scrollTo(0, result.scrollHeight)
                     }
