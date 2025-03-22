@@ -1,6 +1,22 @@
-* {
+html {
+  font-family: "Winky Sans", tahoma, verdana;
+  font-size: 16px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.8em;
   font-family: "Handlee", tahoma, verdana;
-  font-size: 14px;
+}
+h1 {
+  font-size: 24px;
+}
+h2 {
+  font-size: 20px;
 }
 body {
   background-color: black;
@@ -37,7 +53,11 @@ body {
 }
 .neon {
   color: white;
-  text-shadow: 0 0 2px white, 0 0 3px #ffc, 0 0 5px #ffa, 0 0 7px #ff4,
+  text-shadow:
+    0 0 2px white,
+    0 0 3px #ffc,
+    0 0 5px #ffa,
+    0 0 7px #ff4,
     0px 0px 9px yellow;
   font-size: 16px;
 }
@@ -80,42 +100,34 @@ p {
   color: #ccc;
 }
 .shark.attack {
-  transition: left ease-in 2s, bottom ease-in 2s;
-  -webkit-transition: left ease-in 2s, bottom ease-in 2s;
-  -ms-transition: left ease-in 2s, bottom ease-in 2s;
-  -o-transition: left ease-in 2s, bottom ease-in 2s;
+  transition:
+    left ease-in 2s,
+    bottom ease-in 2s;
+  -webkit-transition:
+    left ease-in 2s,
+    bottom ease-in 2s;
+  -ms-transition:
+    left ease-in 2s,
+    bottom ease-in 2s;
+  -o-transition:
+    left ease-in 2s,
+    bottom ease-in 2s;
   left: 0;
   bottom: -150px;
 }
-.shark {
-  position: fixed;
-  left: -436px;
-  bottom: -699px;
-  -webkit-transition: left ease-in 2s, bottom ease-in 2s;
-  -ms-transition: left ease-in 2s, bottom ease-in 2s;
-  -o-transition: left ease-in 2s, bottom ease-in 2s;
-  transition: left ease-in 2s, bottom ease-in 2s;
-}
-.menu-links li {
-  padding: 0 0 0 15px;
-  float: right;
-}
 .menu-links {
+  display: flex;
+  gap: 14px;
   position: absolute;
   top: 0;
   right: 0;
-  left: 0;
-  padding-left: 0;
-  padding-right: 15px;
-  list-style-type: none;
   margin: 0;
-  padding-top: 8px;
-  padding-bottom: 7px;
+  padding: 0;
+  list-style-type: none;
   background: rgba(255, 255, 255, 0.05);
 }
 .menu-links a {
-  font-family: arial;
-  font-size: 12px;
+  font-size: 14px;
   text-decoration: none;
   color: white;
 }

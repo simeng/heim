@@ -10,13 +10,13 @@ export default function Page() {
       <div className="content">
         <ul className="menu-links">
           <li>
-            <a href="https://twitter.com/graaten">
-              <i className="fab fa-twitter"></i> graaten
+            <a href="https://bsky.app/profile/simeng.h4x.no">
+              <i className="fa-brands fa-bluesky"></i> simeng.h4x.no
             </a>
           </li>
           <li>
             <a href="https://github.com/simeng">
-              <i className="fab fa-github"></i> simeng
+              <i className="fa-brands fa-github"></i> simeng
             </a>
           </li>
         </ul>
@@ -26,7 +26,7 @@ export default function Page() {
         </header>
 
         <h1>My page of h4x</h1>
-        <p>I'm Simen and this is my test page of small js h4x</p>
+        <p>Hello, I'm Simen and this is my test page of small js h4x</p>
         <h2>Some stuff I've contributed to</h2>
         <ul>
           <li>
@@ -51,6 +51,16 @@ export default function Page() {
           </li>
         </ul>
 
+        <h2>Some stuff I know something about</h2>
+        <ul>
+          <li>Laravel, Tailwind, React, D3/Visx</li>
+          <li>JS, PHP, Bash, CSS</li>
+          <li>Postgresql, OpenSearch, Redis, Varnish</li>
+          <li>
+            GNU/Linux server hosting, the old-fashioned manual way (ansible)
+          </li>
+        </ul>
+
         <div
           className="bagger"
           style={{
@@ -59,7 +69,7 @@ export default function Page() {
           }}
         >
           <h2 className="neon">The Bagger 288</h2>
-          <PlasmaEffect width={70} height={70} />
+          <PlasmaEffect width={150} height={120} />
           <video
             className="f-right pad-left"
             src="/gw2.webm"

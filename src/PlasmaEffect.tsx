@@ -59,7 +59,7 @@ export default function PlasmaEffect({ width, height }) {
       style={{
         borderRadius: "5px",
         float: "left",
-        margin: "0 10px 10px 0",
+        margin: "0 10px 5px 0",
       }}
       ref={ref}
       width={width}
