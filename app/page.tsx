@@ -6,7 +6,6 @@ import "./page.css"
 export default function Page() {
   return (
     <>
-      <canvas width={500} height={500} id="box"></canvas>
       <div className="content">
         <ul className="menu-links">
           <li>
@@ -42,6 +41,10 @@ export default function Page() {
             <a href="https://github.com/simeng/smallhtml">smallhtml contribs</a>{" "}
             for TG
           </li>
+          <li>
+            Godpris.no -{" "}
+            <a href="https://godpris.no">A Comparison Shopping Service</a>
+          </li>
         </ul>
 
         <h2>Some stuff I made</h2>
@@ -70,13 +73,7 @@ export default function Page() {
         >
           <h2 className="neon">The Bagger 288</h2>
           <PlasmaEffect width={150} height={120} />
-          <video
-            className="f-right pad-left"
-            src="/gw2.webm"
-            autoPlay={true}
-            loop={true}
-            muted
-          ></video>
+          <video src="/gw2.webm" autoPlay={true} loop={true} muted></video>
           <p>
             The leaders of the world sat down around a secret table. There was a
             threat to humankind they must defend against. To fight against

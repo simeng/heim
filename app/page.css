@@ -21,19 +21,6 @@ h2 {
 body {
   background-color: black;
 }
-#box {
-  position: absolute;
-  top: -100px;
-  left: -80px;
-}
-.btc img {
-  display: block;
-}
-.btc {
-  border: 2px solid #888;
-  padding: 2px;
-  float: right;
-}
 .content {
   position: relative;
   margin: 0 auto;
@@ -61,27 +48,9 @@ body {
     0px 0px 9px yellow;
   font-size: 16px;
 }
-#rawr {
-  position: absolute;
-  top: -21px;
-  right: -364px;
-  color: red;
-  font-size: 235px;
-  font-family: Georgia;
-  font-weight: bold;
-  transform: rotate(9deg);
-  -o-transform: rotate(9deg);
-  -webkit-transform: rotate(9deg);
-  -ms-transform: rotate(9deg);
-}
-.f-right {
+video {
   float: right;
-}
-.third {
-  width: 33%;
-}
-.pad-left {
-  padding-left: 1em;
+  padding: 1em;
 }
 li,
 h1,
